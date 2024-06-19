@@ -1,11 +1,32 @@
 package com.example.demo.entity;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+//it will search for the db with the collection named journal_entries and
+//the schema of the document will be matched by the schema below.
+@Document(collection = "journal_entries")
 public class JournalEntry {
-    private long id;
+
+    @Id
+    private ObjectId id;
 
     private String title;
 
     private String content;
+
+    private LocalDateTime date;
+
+    private LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 
     public String getTitle() {
         return title;
@@ -23,11 +44,11 @@ public class JournalEntry {
         this.content = content;
     }
 
-    public long getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 }
