@@ -33,4 +33,9 @@ public class UserService {
 
     }
 
+    public List<User> findbyJournalEntryId(ObjectId journal_id) {
+        return userRepository.findByJournalEntriesContaining(journal_id);
+    }
+
+
 }
