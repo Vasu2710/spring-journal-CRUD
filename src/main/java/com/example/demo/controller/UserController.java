@@ -29,10 +29,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("getAll")
-    public List<User> getAll() {
-        return userService.getAll();
-    }
+
 
 
 
