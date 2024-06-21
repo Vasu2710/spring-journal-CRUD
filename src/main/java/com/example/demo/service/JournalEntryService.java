@@ -31,7 +31,7 @@ public class JournalEntryService {
             User user = userService.findByUserName(userName);
             JournalEntry saved = journalEntryRepository.save(journalEntry);
             user.getJournalEntries().add(saved);
-            userService.saveEntry(user);
+            userService.saveNewUser(user);
         }
         catch(Exception e){
             System.out.println(e);
@@ -51,16 +51,26 @@ public class JournalEntryService {
     public Optional<JournalEntry> getById(ObjectId id){
         return journalEntryRepository.findById(id);
     }
+    @Transactional
+    public boolean deleteEntry(ObjectId id, String Username){
+        boolean removed = false;
+        try {
+            User user = userService.findByUserName(Username);
+            boolean check = user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+            if (check) {
+                userService.saveUser(user);
+                journalEntryRepository.deleteById(id);
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+            throw new RuntimeException("An error occured while deleting!", e);
+            }
+        return removed;
+        }
 
-    public void deleteEntry(ObjectId id){
-         journalEntryRepository.deleteById(id);
-         List<User> users= userService.findbyJournalEntryId(id);
-         for(User user :  users){
-            user.getJournalEntries().remove(id);
-            userService.saveEntry(user);
-         }
 
 
     }
 
-}
+
